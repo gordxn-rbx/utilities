@@ -1,0 +1,36 @@
+{
+  "name": "SignaLuau Example",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "Shared": {
+          "$path": "src/ReplicatedStorage/Shared"
+      },
+
+      "SignaLuau": {
+          "$path": "src/ReplicatedStorage/SignaLuau/SignaLuau.luau",
+
+          "Objects": {
+            "$path": "src/ReplicatedStorage/SignaLuau/Objects"
+          },
+
+          "Config": {
+            "$path": "src/ReplicatedStorage/SignaLuau/Config"
+          }
+        }
+    },
+
+    "ServerScriptService": {
+      "Server": {
+          "$path": "src/ServerScriptService/SignalExample"
+        }
+    },
+
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        
+      }
+    }
+  }
+}
