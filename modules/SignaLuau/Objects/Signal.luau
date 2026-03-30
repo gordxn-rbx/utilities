@@ -105,10 +105,14 @@ end)
 signal:Fire("Message 1")
 ```
 
-@param callback Function
+@param callback (...any) -> ()
 @return SignalConnection
 ]=]
-function Signal:Connect(callback: (...any) -> ()): (SignalConnection)
+function Signal:Connect(callback: (...any) -> ()): (SignalConnection?)
+    if (callback == nil) or (typeof(callback) == "function") then
+        return
+    end
+
     local connection: SignalConnection
     connection = SignalConnection.new(function()
         self.internal.connections[connection] = nil
@@ -124,7 +128,7 @@ end
 Connects a given `function` to the `Signal` object.
 Connection remains open until it is first fired, then cleans itself up.
 
-@param callback Function
+@param callback (...any) -> ()
 @return SignalConnection
 
 ```lua
@@ -136,7 +140,11 @@ signal:Fire("Message 1")
 signal:Fire("Message 1") -- Will not print
 ```
 ]=]
-function Signal:Once(callback: (any) -> ()): (SignalConnection)
+function Signal:Once(callback: (any) -> ()): (SignalConnection?)
+    if (callback == nil) or (typeof(callback) == "function") then
+        return
+    end
+
     local connection: SignalConnection
     connection = self:Connect(function(...: any)
         connection:Disconnect()
@@ -173,6 +181,10 @@ function Signal:Wait(): (...any)
         connection:Disconnect()
         coroutine.resume(thread, ...)
     end)
+
+    if (not connection) then
+        return
+    end
 
     return coroutine.yield()
 end
