@@ -20,7 +20,7 @@ SignaLuau is a lightweight, consumer-grade Luau module for implementing custom s
 Place the `SignaLuau` folder in your `ReplicatedStorage` or another shared location in your Roblox project. Require it as a module:
 
 ```lua
-local SignaLuau = require(game.ReplicatedStorage.SignaLuau)
+local SignaLuau = require("path/to/SignaLuau")
 ```
 
 ---
