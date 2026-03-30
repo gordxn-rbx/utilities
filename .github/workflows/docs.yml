@@ -11,26 +11,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout your repo
       - uses: actions/checkout@v4
 
-      # Setup Node (Moonwave requires Node)
       - uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # Install Moonwave globally
       - run: npm install -g moonwave@latest
 
-      # Build + publish
       - name: Build & Publish Docs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Configure GitHub auth for pushing to gh-pages
           git config --global user.email "support+actions@github.com"
-          git config --global user.name "github-actions-bot"
-          git remote set-url origin "https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git config --global user.name "github-actions[bot]"
 
-          # Build and publish docs
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
           moonwave build --publish --code modules
