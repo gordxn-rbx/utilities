@@ -16,7 +16,17 @@ connection:Disconnect()
 ```
 ]=]
 local SignalConnection = {}
-SignalConnection.__index = SignalConnection
+SignalConnection.__index = function(table: {}, key: any)
+    if (key == "Connected") then
+        return table["internal"]["connected"]
+     end
+
+    return SignalConnection[key]
+end
+
+SignalConnection.__newindex = function(table: {}, key: any, value: any)
+    return nil
+end
 
 
 --// TYPE DECLARATIONS
@@ -44,31 +54,17 @@ Returns a constructed `Signal` object with the proper `disconnectFunction`.
 @param disconnectFunction Function
 @return SignalConnection
 ]=]
-function SignalConnection.new(disconnectFunction: () -> ())
+function SignalConnection.new(disconnectFunction: () -> ()): ()
     local internal: SignalConnectionInternal = {
         connected = true,
         disconnectFunction = disconnectFunction
-    }
-
-    local meta = {
-        __index = function(table: {}, key: any)
-            if (key == "Connected") then
-                return table["internal"]["connected"]
-            end
-
-            return SignalConnection[key]
-        end,
-
-        __newindex = function(table: {}, key: any, value: any)
-            return nil
-        end
     }
 
     local self = {
         internal = internal
     }
 
-    return setmetatable(self, meta)
+    return setmetatable(self, SignalConnection)
 end
 
 

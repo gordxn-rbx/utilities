@@ -1,5 +1,10 @@
 {
-  "name": "SignaLuau Example",
+  "name": "Gordxn Utilities",
+
+  "globIgnorePaths": [
+    "*.toml"
+  ],
+
   "tree": {
     "$className": "DataModel",
 
@@ -21,6 +26,11 @@
             "$path": "examples/RemoteService"
           }
         }
+    },
+
+    "StarterGui": {
+      "$className": "StarterGui",
+      "$path": "StarterGui/"
     },
 
     "StarterPlayer": {

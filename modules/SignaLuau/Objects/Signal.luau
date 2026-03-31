@@ -19,7 +19,13 @@ local SignalConnection = require("./SignalConnection")
     ```
 ]=]
 local Signal = {}
-Signal.__index = Signal
+Signal.__index = function(table: {}, key: any)
+    return Signal[key]
+end
+
+Signal.__newindex = function(table: {}, key: any, value: any)
+    return nil
+end
 
 
 --// TYPE DECLARATIONS
@@ -62,21 +68,11 @@ function Signal.new(): ()
         connections = {}
     }
 
-    local meta = {
-        __index = function(table: {}, key: any)
-            return Signal[key]
-        end,
-
-        __newindex = function(table: {}, key: any, value: any)
-            return nil
-        end
-    }
-
     local self = {
         internal = internal
     }
 
-    return setmetatable(self, meta)
+    return setmetatable(self, Signal)
 end
 
 

@@ -12,13 +12,12 @@ An easy to use lightweight exceptions logging module.
 ]=]
 export type Exception = {
     message: string,
-    outputFn: (string) -> ()
+    outputFn: <T...>(T...) -> ()
 }
 
 local UndefinedException: Exception = {
     message = "An undefined exception has occurred.",
-    outputFn = warn,
-    middleware = {}
+    outputFn = warn
 }
 
 
@@ -56,7 +55,7 @@ end
 --[=[
 @within Exceptions
 @param exceptionMsg string
-@param outputFn (string) -> () -- The function to call when the exception is thrown.
+@param outputFn <T...>(T...) -> () -- The function to call when the exception is thrown.
 @return Exception
 
 Constructs and returns a new 'Exception' with the given parameters.
@@ -65,7 +64,7 @@ local e = require("@path/to/Exceptions")
 local sampleException = e.new("Sample exception has occurred.", warn)
 ```
 ]=]
-local new = function(exceptionMsg: string, outputFn: (string) -> ()): Exception
+local new = function(exceptionMsg: string, outputFn: <T...>(T...) -> ()): (Exception)
     exceptionMsg = exceptionMsg or ""
     
     if (outputFn == nil) or (typeof(outputFn) ~= "function") then
@@ -81,4 +80,7 @@ end
 return {
     Throw,
     new
+} :: {
+    Throw: (e: Exception, origin: string?) -> (),
+    new: (exceptionMsg: string, outputFn: <T...>(T...) -> ()) -> (Exception),
 }
