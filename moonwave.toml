@@ -5,6 +5,10 @@ format = "roblox"
 section = "SignaLuau"
 classes = ["Signal", "SignalConnection"]
 
+[[classOrder]]
+section = "Exceptions"
+classes = ["Exceptions"]
+
 [home]
 enabled = true
 includeReadme = true
