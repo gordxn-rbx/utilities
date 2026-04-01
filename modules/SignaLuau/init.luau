@@ -12,7 +12,7 @@ export type Signal<T...> = Signal.Signal<T...>
 
 
 --[=[
-@module SignaLuau
+@class SignaLuau
 
 A lightweight, consumer-grade Luau module for implementing custom signals and signal connections, designed to closely mimic the built-in `RBXScriptSignal` and `RBXScriptConnection` behavior in Roblox.
 ]=]

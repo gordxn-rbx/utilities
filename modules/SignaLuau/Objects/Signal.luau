@@ -2,21 +2,25 @@
 local SignalConnection = require("./SignalConnection")
 
 --[=[
-    @class Signal
+@class Signal
 
-    A `Signal` object allows events to be fired and observed.
+A `Signal` object allows events to be fired and observed.
 
-    Basic Implementation:
-    ```lua
-    local signal: Signal = Signal.new()
+Basic Implementation:
+```lua
+local Signal = require("@path/toSignaLuau")
 
-    local connection: SignalConnection = signal:Connect(function(msg: string): ()
-        print(msg)
-    end)
+type Signal<T...> = Signal.Signal<T...>
+type SignalConnection = Signal.SignalConnection
 
-    signal:Fire("Hello, world!")
-    connection:Disconnect()
-    ```
+local signal: Signal<string> = Signal.new()
+local connection: SignalConnection = signal:Connect(function(msg: string): ()
+    print(msg)
+end)
+
+signal:Fire("Hello, world!")
+connection:Disconnect()
+```
 ]=]
 local Signal = {}
 Signal.__index = function(table: {}, key: any)
@@ -39,14 +43,14 @@ type SignalInternal = {
 
 --[=[
 @within Signal
-@interface Signal
+@interface Signal<T...>
 
-.Connect (Signal, (...any) -> ()) -> (SignalConnection)
-.Destroy (Signal) -> ()
-.Fire (Signal, ...any) -> ()
-.FireAsync (Signal, ...any) -> ()
-.Once (Signal, (...any) -> ()) -> (SignalConnection)
-.Wait (Signal) -> (...any)
+.Connect (Signal<T...>, (...T) -> ()) -> (SignalConnection)
+.Destroy (Signal<T...>) -> ()
+.Fire (Signal<T...>, ...T) -> ()
+.FireAsync (Signal<T...>, ...T) -> ()
+.Once (Signal<T...>, (...T) -> ()) -> (SignalConnection)
+.Wait (Signal<T...>) -> (...T)
 ]=]
 export type Signal<T...> = {
     Connect: (self: Signal<T...>, callback: (T...) -> ()) -> (SignalConnection),
@@ -59,20 +63,27 @@ export type Signal<T...> = {
 
 
 --[=[
+@return Signal<T...>
+
 Returns a constructed `Signal` object
 
-@return Signal
+```lua
+local Signal = require("@path/toSignaLuau")
+type Signal<T...> = Signal.Signal<T...>
+
+local signal: Signal<string> = Signal.new()
+```
 ]=]
-function Signal.new(): ()
+function Signal.new<T...>(): (Signal<T...>)
     local internal = {
         connections = {}
     }
 
-    local self = {
+    local self = setmetatable({
         internal = internal
-    }
+    }, Signal)
 
-    return setmetatable(self, Signal)
+    return self
 end
 
 
@@ -90,6 +101,9 @@ function Signal:Destroy(): ()
 end
 
 --[=[
+@param callback (...any) -> ()
+@return SignalConnection?
+
 Connects a given `function` to the `Signal` object.
 Will run until `:Disconnect()` is called, or the connection's signal is destroyed.
 
@@ -100,9 +114,6 @@ end)
 
 signal:Fire("Message 1")
 ```
-
-@param callback (...any) -> ()
-@return SignalConnection
 ]=]
 function Signal:Connect(callback: (...any) -> ()): (SignalConnection?)
     if (callback == nil) or (typeof(callback) == "function") then
@@ -121,11 +132,11 @@ end
 
 
 --[=[
+@param callback (...any) -> ()
+@return SignalConnection?
+
 Connects a given `function` to the `Signal` object.
 Connection remains open until it is first fired, then cleans itself up.
-
-@param callback (...any) -> ()
-@return SignalConnection
 
 ```lua
 signal:Once(function(msg: string)

@@ -3,11 +3,7 @@ format = "roblox"
 
 [[classOrder]]
 section = "SignaLuau"
-classes = ["Signal", "SignalConnection"]
-
-[[classOrder]]
-section = "Exceptions"
-classes = ["Exceptions"]
+classes = ["SignaLuau", "Signal", "SignalConnection"]
 
 [home]
 enabled = true

@@ -8,7 +8,7 @@ An easy to use lightweight exceptions logging module.
 @within Exceptions
 @interface Exception
 @field message string
-@field outputFn (string) -> ()
+@field outputFn <T...>(T...) -> ()
 ]=]
 export type Exception = {
     message: string,
@@ -31,10 +31,13 @@ Throws a given exception with an optional 'origin' parameter to help debug.
 ```lua
 local e = require("@path/to/Exceptions")
 
-local sampleException = e.new("Sample exception has occurred.", warn)
+type Exception = e.Exception
+
+local sampleException: Exception = e.new("Sample exception has occurred.", warn)
 local var: Number = 42
 if (var ~= 50) then
-    e.Throw(sampleException, "LOCATION") --Warns "[LOCATION]: Sample exception has occurred."
+    e.Throw(sampleException, "LOCATION")
+    --Warns "[LOCATION]: Sample exception has occurred."
 end
 ```
 ]=]
@@ -61,7 +64,9 @@ end
 Constructs and returns a new 'Exception' with the given parameters.
 ```lua
 local e = require("@path/to/Exceptions")
-local sampleException = e.new("Sample exception has occurred.", warn)
+type Exception = e.Exception
+
+local sampleException: Exception = e.new("Sample exception has occurred.", warn)
 ```
 ]=]
 local new = function(exceptionMsg: string, outputFn: <T...>(T...) -> ()): (Exception)

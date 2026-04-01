@@ -5,8 +5,12 @@ A `SignalConnection` object exposes methods for managing a specific connection.
 
 Basic Implementation:
 ```lua
-local signal: Signal = Signal.new()
+local Signal = require("@path/toSignaLuau")
 
+type Signal<T...> = Signal.Signal<T...>
+type SignalConnection = Signal.SignalConnection
+
+local signal: Signal<string> = Signal.new()
 local connection: SignalConnection = signal:Connect(function(msg: string): ()
     print(msg)
 end)
@@ -49,10 +53,10 @@ export type SignalConnection = {
 
 
 --[=[
-Returns a constructed `Signal` object with the proper `disconnectFunction`.
-
 @param disconnectFunction Function
 @return SignalConnection
+
+Returns a constructed `Signal` object with the proper `disconnectFunction`.
 ]=]
 function SignalConnection.new(disconnectFunction: () -> ()): ()
     local internal: SignalConnectionInternal = {
