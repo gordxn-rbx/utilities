@@ -8,15 +8,18 @@ An easy to use lightweight exceptions logging module.
 @within Exceptions
 @interface Exception
 @field message string
+@fiedl formatted boolean
 @field outputFn <T...>(T...) -> ()
 ]=]
 export type Exception = {
     message: string,
+    formatted: boolean,
     outputFn: <T...>(T...) -> ()
 }
 
 local UndefinedException: Exception = {
     message = "An undefined exception has occurred.",
+    formatted = false,
     outputFn = warn
 }
 
@@ -24,7 +27,8 @@ local UndefinedException: Exception = {
 --[=[
 @within Exceptions
 @param e Exception
-@param origin String
+@param origin String -- Optional
+@param ... any -- Optional arguments if an exception is formatted
 
 Throws a given exception with an optional 'origin' parameter to help debug.
 
@@ -41,7 +45,8 @@ if (var ~= 50) then
 end
 ```
 ]=]
-local Throw = function(e: Exception, origin: string?): ()
+local Throw = function(e: Exception, origin: string?, ...: any?): ()
+    local msg
     if (e == nil) or (typeof(e) ~= "table") then
         e = UndefinedException
     end
@@ -49,9 +54,15 @@ local Throw = function(e: Exception, origin: string?): ()
     if (origin == nil) or (typeof(origin) ~= "string") then
         origin = "Unknown"
     end
+
+    if (e.formatted) then
+        msg = e.message:format(tostring(...))
+    else
+        msg = e.message
+    end
     
     pcall(function()
-        e.outputFn(`[{origin}]: {e.message}`)
+        e.outputFn(`[{origin}]: {msg}`)
     end)
 end
 
@@ -69,8 +80,9 @@ type Exception = e.Exception
 local sampleException: Exception = e.new("Sample exception has occurred.", warn)
 ```
 ]=]
-local new = function(exceptionMsg: string, outputFn: <T...>(T...) -> ()): (Exception)
+local new = function(exceptionMsg: string, isFormatted: boolean, outputFn: <T...>(T...) -> ()): (Exception)
     exceptionMsg = exceptionMsg or ""
+    isFormatted = isFormatted or false
     
     if (outputFn == nil) or (typeof(outputFn) ~= "function") then
         outputFn = warn
@@ -78,14 +90,15 @@ local new = function(exceptionMsg: string, outputFn: <T...>(T...) -> ()): (Excep
 
     return {
         message = exceptionMsg,
+        formatted = isFormatted,
         outputFn = outputFn
     }
 end
 
 return {
-    Throw,
-    new
+    Throw = Throw,
+    new = new
 } :: {
-    Throw: (e: Exception, origin: string?) -> (),
-    new: (exceptionMsg: string, outputFn: <T...>(T...) -> ()) -> (Exception),
+    Throw: (e: Exception, origin: string?, ...any?) -> (),
+    new: (exceptionMsg: string, isFormatted: boolean, outputFn: <T...>(T...) -> ()) -> (Exception),
 }
