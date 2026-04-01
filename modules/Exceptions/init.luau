@@ -8,7 +8,7 @@ An easy to use lightweight exceptions logging module.
 @within Exceptions
 @interface Exception
 @field message string
-@fiedl formatted boolean
+@field formatted boolean
 @field outputFn <T...>(T...) -> ()
 ]=]
 export type Exception = {
