@@ -7,7 +7,6 @@ local Component = require("./Component")
 
 
 --[=[
-@within InterLink
 @class Root
 
 A 'Root' object is the wrapper for all 'Component' objects within it's physical instance.

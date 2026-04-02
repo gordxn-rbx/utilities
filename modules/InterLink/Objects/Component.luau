@@ -9,7 +9,6 @@ type SignalConnection = SignaLuau.SignalConnection
 
 
 --[=[
-@within InterLink
 @class Component
 
 A 'Component' object allows for easy management of custom events and the component's 'Instance'.
