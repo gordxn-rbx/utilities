@@ -22,10 +22,10 @@ connection:Disconnect()
 local SignalConnection = {}
 SignalConnection.__index = function(table: {}, key: any)
     if (key == "Connected") then
-        return table["internal"]["connected"]
+        return rawget(table, "internal")["connected"]
      end
 
-    return SignalConnection[key]
+    return rawget(SignalConnection, key)
 end
 
 SignalConnection.__newindex = function(table: {}, key: any, value: any)

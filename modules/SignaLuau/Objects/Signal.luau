@@ -24,7 +24,7 @@ connection:Disconnect()
 ]=]
 local Signal = {}
 Signal.__index = function(table: {}, key: any)
-    return Signal[key]
+    return rawget(Signal, key)
 end
 
 Signal.__newindex = function(table: {}, key: any, value: any)
@@ -116,14 +116,15 @@ signal:Fire("Message 1")
 ```
 ]=]
 function Signal:Connect(callback: (...any) -> ()): (SignalConnection?)
-    if (callback == nil) or (typeof(callback) == "function") then
+    if (callback == nil) or (typeof(callback) ~= "function") then
         return
     end
-
+    
     local connection: SignalConnection
     connection = SignalConnection.new(function()
         self.internal.connections[connection] = nil
     end)
+
 
     self.internal.connections[connection] = callback
 

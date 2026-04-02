@@ -27,7 +27,7 @@ local UndefinedException: Exception = {
 --[=[
 @within Exceptions
 @param e Exception
-@param origin String -- Optional
+@param origin String
 @param ... any -- Optional arguments if an exception is formatted
 
 Throws a given exception with an optional 'origin' parameter to help debug.
@@ -45,7 +45,7 @@ if (var ~= 50) then
 end
 ```
 ]=]
-local Throw = function(e: Exception, origin: string?, ...: any?): ()
+local Throw = function(e: Exception, origin: string, ...: string?): ()
     local msg
     if (e == nil) or (typeof(e) ~= "table") then
         e = UndefinedException
@@ -56,7 +56,7 @@ local Throw = function(e: Exception, origin: string?, ...: any?): ()
     end
 
     if (e.formatted) then
-        msg = e.message:format(tostring(...))
+        msg = e.message:format(...)
     else
         msg = e.message
     end
@@ -68,7 +68,8 @@ end
 
 --[=[
 @within Exceptions
-@param exceptionMsg string
+@param exceptionMsg string -- Message to display when the exception is thrown.
+@param isFormatted boolean -- If the message should be formatted when the exception is thrown.
 @param outputFn <T...>(T...) -> () -- The function to call when the exception is thrown.
 @return Exception
 
@@ -83,6 +84,14 @@ local sampleException: Exception = e.new("Sample exception has occurred.", warn)
 local new = function(exceptionMsg: string, isFormatted: boolean, outputFn: <T...>(T...) -> ()): (Exception)
     exceptionMsg = exceptionMsg or ""
     isFormatted = isFormatted or false
+
+    if (typeof(exceptionMsg) ~= "string") then
+        exceptionMsg = ""
+    end
+
+    if (typeof(isFormatted) ~= "boolean") then
+        isFormatted = false
+    end
     
     if (outputFn == nil) or (typeof(outputFn) ~= "function") then
         outputFn = warn

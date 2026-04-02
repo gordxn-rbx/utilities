@@ -1,0 +1,18 @@
+[package]
+name = "gordxn-rbx/interlink"
+description = "A small component framework providing identity, tags, attributes, events, and deterministic lifecycles for Instance hierarchies."
+homepage = "https://gordxn-rbx.github.io/utilities/api/InterLink/"
+repository = "https://github.com/gordxn-rbx/utilities"
+
+version = "1.1.2"
+
+license = "MIT"
+authors = ["Ashton Ivy <ashtonivy23@gmail.com>"]
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+exclude = ["node_modules"]
+
+[dependencies]
+SignaLuau = "gordxn-rbx/signaluau@1.1.0"
+Exceptions = "gordxn-rbx/exceptions@1.1.0"

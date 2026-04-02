@@ -4,7 +4,7 @@ description = "Lightweight Exceptions handling module to make error handling mor
 homepage = "https://gordxn-rbx.github.io/utilities/api/Exceptions/"
 repository = "https://github.com/gordxn-rbx/utilities"
 
-version = "1.0.0"
+version = "1.1.0"
 
 license = "MIT"
 authors = ["Ashton Ivy <ashtonivy23@gmail.com>"]
