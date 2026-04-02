@@ -105,8 +105,8 @@ export type Component<T> = {
 
 
 --[=[
-@param Id string
-@param Instance Instance
+@param _Id string
+@param _Instance Instance
 @return Component<T>
 
 Returns a constructed 'Component' object with generic type <T>.
