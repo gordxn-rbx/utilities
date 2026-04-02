@@ -5,6 +5,10 @@ format = "roblox"
 section = "SignaLuau"
 classes = ["SignaLuau", "Signal", "SignalConnection"]
 
+[[classOrder]]
+section = "InterLink"
+classes = ["InterLink", "Root", "Component"]
+
 [home]
 enabled = true
 includeReadme = true
